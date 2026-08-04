@@ -1,12 +1,15 @@
+from types import SimpleNamespace
+
 from api.controllers import Subtotal
-from django_mock_queries.query import MockSet, MockModel
+
 
 def test_SimpleCost():
   #Arrange
-  order = MockSet()
-  order.add(MockModel(quantity=5, item=MockModel(price=1.0)))
-  order.add(MockModel(quantity=5, item=MockModel(price=1.0)))
-  order.add(MockModel(quantity=5, item=MockModel(price=1.0)))
+  order = [
+    SimpleNamespace(quantity=5, item=SimpleNamespace(price=1.0)),
+    SimpleNamespace(quantity=5, item=SimpleNamespace(price=1.0)),
+    SimpleNamespace(quantity=5, item=SimpleNamespace(price=1.0)),
+  ]
   #Act
   cost = Subtotal.calculate(order)
   #Assert
@@ -15,9 +18,10 @@ def test_SimpleCost():
 
 def test_ComplexCost():
   #Arrange
-  order = MockSet()
-  order.add(MockModel(quantity=2, item=MockModel(price=3.5)))
-  order.add(MockModel(quantity=1, item=MockModel(price=4.5)))
+  order = [
+    SimpleNamespace(quantity=2, item=SimpleNamespace(price=3.5)),
+    SimpleNamespace(quantity=1, item=SimpleNamespace(price=4.5)),
+  ]
   #Act
   cost = Subtotal.calculate(order)
   #Assert
